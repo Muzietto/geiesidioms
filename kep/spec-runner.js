@@ -16,7 +16,7 @@ require.config({
 });
 
 define(['chai', 'mocha'], (function(chai, mocha) {
-    require(['./test_lambda'], function(require) {
+    require(['./test_idioms'], function(require) {
       mocha.run();
     });
 }));

@@ -1,0 +1,23 @@
+
+package (
+  idiomsTests
+  sum
+  curried_sum
+  
+) 
+
+with import './lib/khepri-idioms' 
+  idioms#{
+    curried
+  }
+
+in {
+
+  sum := \x,y -> x + y;
+  curried_sum := curried sum;
+
+  idiomsTests := {}; 
+
+  idiomsTests.duary_sum := sum (1,3) === 4;
+  idiomsTests.unary_sum := curried_sum 1 3 === 4;
+}

@@ -1,0 +1,17 @@
+// main idioms components
+package (
+  curried
+  list
+)
+{
+
+  curried := \fun -> {
+    return \value -> {
+      return ? (fun.length <= 1) :
+        (fun value) :
+        curried(fun.bind (undefined, value));
+    };
+  };
+
+
+}
