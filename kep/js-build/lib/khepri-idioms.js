@@ -21,8 +21,10 @@ define(["require", "exports"], (function(require, exports) {
                     fabs = [].slice.call(__args0, 0),
                     nextArgs = fabs.reduce((function(acc, curr) {
                         return acc.concat(args.map(curr));
-                    }), []);
-                return list.apply(null, nextArgs);
+                    }), []),
+                    x = list,
+                    y = nextArgs;
+                return x.apply(null, y);
             }),
             ap: (function(afa) {
                 if ((!afa.is_applicative)) throw "not an applicative";
