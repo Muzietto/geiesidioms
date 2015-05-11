@@ -1,6 +1,7 @@
 
 package (
   idiomsTests
+  listTests
   sum
   curried_sum
   
@@ -9,6 +10,7 @@ package (
 with import './lib/khepri-idioms' 
   idioms#{
     curried
+    list
   }
 
 in {
@@ -20,4 +22,18 @@ in {
 
   idiomsTests.duary_sum := sum (1,3) === 4;
   idiomsTests.unary_sum := curried_sum 1 3 === 4;
+  
+  listTests := {};
+  
+  var listOneVal = list 1;
+  listTests.wrapOneVal_0 := listOneVal.fmap(_ * 2).get(0) === 2;
+  listTests.wrapOneVal_1 := listOneVal.fmap(\x -> x).get(0) === 1;
+  
+  var listTwoVal = list(1, 2);
+  listTests.wrapTwoVal_0 := listTwoVal.fmap(_ * 2).get(1) === 4;
+  listTests.wrapTwoVal_1 := listTwoVal.fmap(\x -> x).get(1) === 2;
+  
+  var listXVal = list(1, 2, 'QWE');
+  listTests.wrapXVal_0 := listXVal.fmap(_ * 2).get(2) === 'QWE*2';
+  listTests.wrapXVal_1 := listXVal.fmap(\x -> x+x).get(2) === 'QWEQWE';
 }

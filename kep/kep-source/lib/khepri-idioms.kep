@@ -5,11 +5,30 @@ package (
 )
 {
 
+  // use @ instead
   curried := \fun -> {
     return \value -> {
       return ? (fun.length <= 1) :
         (fun value) :
         curried(fun.bind (undefined, value));
+    };
+  };
+  
+  list := \...args -> {
+    return {
+      is_functor: true,
+      is_applicative: true,
+      fmap : \...fabs -> {
+        var nextArgs = fabs.reduce(\acc curr -> {
+          return acc.concat(args.map curr);
+        }, []);
+        return list.apply(null, nextArgs);
+      },
+      ap: \afa -> {
+        if (!afa.is_applicative) throw 'not an applicative';
+        return afa.fmap args;
+      },
+      get: \index -> args.(index)
     };
   };
 

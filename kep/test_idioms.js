@@ -9,7 +9,8 @@ define([
     "use strict";
     
   var expect = chai.expect,
-    idiomsSuite = tests.idiomsTests
+    idiomsSuite = tests.idiomsTests,
+    listSuite = tests.listTests
     ;
     
   describe('an implementation of idioms in khepri',function(){
@@ -18,6 +19,14 @@ define([
       for (var testcase in idiomsSuite){
         it(testcase,function(){
             expect(idiomsSuite[testcase]).to.be.ok;
+        });
+      }
+    });
+
+    describe('contains tests about lists',function(){
+      for (var testcase in listSuite){
+        it(testcase,function(){
+            expect(listSuite[testcase]).to.be.ok;
         });
       }
     });
