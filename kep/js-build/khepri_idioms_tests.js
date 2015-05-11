@@ -5,7 +5,8 @@
 define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports, idioms) {
     "use strict";
     var idiomsTests, listTests, sum, curried_sum, curried = idioms["curried"],
-        list = idioms["list"];
+        list = idioms["list"],
+        y;
     (sum = (function(x, y) {
         return (x + y);
     }));
@@ -41,6 +42,17 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
             return (x + x);
         }))
         .get(2) === "QWEQWE"));
+    var aaa = ((y = [(function(y0) {
+        return (y0 * 2);
+    }), (function(y0) {
+        return (y0 + 100);
+    }), (function(x) {
+        return (x * x);
+    })]), list.apply(null, y)),
+        bbb = aaa.ap(list(1, 2, 3));
+    (listTests.apUnaryFunctions_0 = (bbb.get(0) === 2));
+    (listTests.apUnaryFunctions_3 = (bbb.get(3) === 101));
+    (listTests.apUnaryFunctions_8 = (bbb.get(8) === 9));
     (exports["idiomsTests"] = idiomsTests);
     (exports["listTests"] = listTests);
     (exports["sum"] = sum);

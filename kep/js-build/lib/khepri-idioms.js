@@ -19,16 +19,15 @@ define(["require", "exports"], (function(require, exports) {
             fmap: (function() {
                 var __args0 = arguments,
                     fabs = [].slice.call(__args0, 0),
-                    nextArgs = fabs.reduce((function(acc, curr) {
-                        return acc.concat(args.map(curr));
-                    }), []),
                     x = list,
-                    y = nextArgs;
+                    y = fabs.reduce((function(acc, curr) {
+                        return acc.concat(args.map(curr));
+                    }), []);
                 return x.apply(null, y);
             }),
             ap: (function(afa) {
-                if ((!afa.is_applicative)) throw "not an applicative";
-                return afa.fmap(args);
+                var x = afa.fmap;
+                return x.apply(null, args);
             }),
             get: (function(index) {
                 return args[index];

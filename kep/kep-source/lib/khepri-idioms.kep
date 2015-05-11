@@ -17,16 +17,9 @@ package (
   list := \...args -> ({
     is_functor: true,
     is_applicative: true,
-    fmap : \...fabs -> {
-      var nextArgs = fabs.reduce(\acc curr -> {
-        return acc.concat(args.map curr);
-      }, []);
-      return list <<| nextArgs;
-    },
-    ap: \afa -> {
-      if (!afa.is_applicative) throw 'not an applicative';
-      return afa.fmap args;
-    },
+    fmap : \...fabs -> list <<|
+      fabs.reduce(\acc curr -> acc.concat(args.map curr), []),
+    ap: \afa -> afa.fmap <<| args,
     get: \index -> args.(index)
   });
 

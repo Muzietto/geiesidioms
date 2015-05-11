@@ -36,4 +36,10 @@ in {
   var listXVal = list(1, 2, 'QWE');
   listTests.wrapXVal_0 := listXVal.fmap(_ * 2).get(2) === 'QWE*2';
   listTests.wrapXVal_1 := listXVal.fmap(\x -> x+x).get(2) === 'QWEQWE';
+  
+  var aaa = list <<| [(_ * 2), (_ + 100), \x -> x*x];
+  var bbb = aaa.ap (list(1,2,3));
+  listTests.apUnaryFunctions_0 := bbb.get(0) === 2;
+  listTests.apUnaryFunctions_3 := bbb.get(3) === 101;
+  listTests.apUnaryFunctions_8 := bbb.get(8) === 9;
 }
