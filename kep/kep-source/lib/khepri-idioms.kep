@@ -22,7 +22,7 @@ package (
         var nextArgs = fabs.reduce(\acc curr -> {
           return acc.concat(args.map curr);
         }, []);
-        return list.apply(null, nextArgs);
+        return nextArgs |>> list.apply;
       },
       ap: \afa -> {
         if (!afa.is_applicative) throw 'not an applicative';
