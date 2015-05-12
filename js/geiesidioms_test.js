@@ -16,8 +16,8 @@ describe('applicatives (aka idioms) in JavaScript', function () {
       });
       it('using curried n-ary functions',function(){
         var aaa = list(
-          curried(function(x, y){ return x + y; }, 2),
-          curried(function(x, y){ return x * y; }, 2)
+          curried(function(x, y){ return x + y; }),
+          curried(function(x, y){ return x * y; })
         );
         var bbb = aaa.ap(list(1,2));
         var ccc = bbb.ap(list(3,4));

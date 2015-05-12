@@ -5,22 +5,16 @@ package (
 )
 {
 
-  // use @ instead
-  curried := \fun -> {
-    return \value -> {
-      return ? (fun.length <= 1) :
-        (fun value) :
-        curried(fun.bind (undefined, value));
-    };
-  };
+  curried := \fun -> \value -> ? (fun.length <= 1) : (fun value) : curried(fun @ value);
   
   list := \...args -> ({
     is_functor: true,
     is_applicative: true,
     fmap : \...fabs -> list <<|
       fabs.reduce(\acc curr -> acc.concat(args.map curr), []),
-    ap: \afa -> afa.fmap <<| args,
-    get: \index -> args.(index)
+    ap: \afa ->  args |>> afa.fmap,
+    get: \index -> args.(index),
+    toString: \_ -> '[' + args.toString() + ']'
   });
 
 

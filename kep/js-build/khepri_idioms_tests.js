@@ -6,7 +6,12 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
     "use strict";
     var idiomsTests, listTests, sum, curried_sum, curried = idioms["curried"],
         list = idioms["list"],
-        y;
+        y, y0, y1, __mul = (function(x, y) {
+            return (x * y);
+        }),
+        __add = (function(x, y) {
+            return (x + y);
+        });
     (sum = (function(x, y) {
         return (x + y);
     }));
@@ -24,9 +29,9 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
             return x;
         }))
         .get(0) === 1));
-    var listTwoVal = list(1, 2);
-    (listTests.wrapTwoVal_0 = (listTwoVal.fmap((function(y) {
-            return (y * 2);
+    var listTwoVal = ((y = [1, 2]), list.apply(null, y));
+    (listTests.wrapTwoVal_0 = (listTwoVal.fmap((function(y0) {
+            return (y0 * 2);
         }))
         .get(1) === 4));
     (listTests.wrapTwoVal_1 = (listTwoVal.fmap((function(x) {
@@ -34,25 +39,29 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
         }))
         .get(1) === 2));
     var listXVal = list(1, 2, "QWE");
-    (listTests.wrapXVal_0 = (listXVal.fmap((function(y) {
-            return (y * 2);
+    (listTests.wrapXVal_0 = (listXVal.fmap((function(y0) {
+            return (y0 * 2);
         }))
-        .get(2) === "QWE*2"));
+        .get(1) === 4));
     (listTests.wrapXVal_1 = (listXVal.fmap((function(x) {
             return (x + x);
         }))
         .get(2) === "QWEQWE"));
-    var aaa = ((y = [(function(y0) {
-        return (y0 * 2);
-    }), (function(y0) {
-        return (y0 + 100);
+    var aaa = ((y0 = [(function(y1) {
+        return (y1 * 2);
+    }), (function(y1) {
+        return (y1 + 100);
     }), (function(x) {
         return (x * x);
-    })]), list.apply(null, y)),
+    })]), list.apply(null, y0)),
         bbb = aaa.ap(list(1, 2, 3));
     (listTests.apUnaryFunctions_0 = (bbb.get(0) === 2));
     (listTests.apUnaryFunctions_3 = (bbb.get(3) === 101));
     (listTests.apUnaryFunctions_8 = (bbb.get(8) === 9));
+    var aaa1 = ((y1 = [curried(__add), curried(__mul)]), list.apply(null, y1)),
+        bbb1 = aaa1.ap(list(1, 2)),
+        ccc1 = bbb1.ap(list(3, 4));
+    (listTests.apCurriedFunctions_0 = (ccc1.toString() === "[4,5,5,6,3,4,6,8]"));
     (exports["idiomsTests"] = idiomsTests);
     (exports["listTests"] = listTests);
     (exports["sum"] = sum);

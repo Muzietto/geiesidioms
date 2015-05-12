@@ -17,17 +17,21 @@ define([
 
     describe('contains a lot of tests',function(){
       for (var testcase in idiomsSuite){
-        it(testcase,function(){
+        (function(tc) {
+          it(tc,function(){
             expect(idiomsSuite[testcase]).to.be.ok;
-        });
+          });
+        })(testcase);
       }
     });
 
     describe('contains tests about lists',function(){
       for (var testcase in listSuite){
-        it(testcase,function(){
-            expect(listSuite[testcase]).to.be.ok;
-        });
+        (function(tc) {
+          it(tc,function(){
+            expect(listSuite[tc]).to.be.ok;
+          });
+        })(testcase);
       }
     });
 

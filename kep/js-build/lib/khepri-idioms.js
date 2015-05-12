@@ -7,7 +7,7 @@ define(["require", "exports"], (function(require, exports) {
     var curried, list;
     (curried = (function(fun) {
         return (function(value) {
-            return ((fun.length <= 1) ? fun(value) : curried(fun.bind(undefined, value)));
+            return ((fun.length <= 1) ? fun(value) : curried(fun.bind(null, value)));
         });
     }));
     (list = (function() {
@@ -26,11 +26,14 @@ define(["require", "exports"], (function(require, exports) {
                 return x.apply(null, y);
             }),
             ap: (function(afa) {
-                var x = afa.fmap;
-                return x.apply(null, args);
+                var y = afa.fmap;
+                return y.apply(null, args);
             }),
             get: (function(index) {
                 return args[index];
+            }),
+            toString: (function(_) {
+                return (("[" + args.toString()) + "]");
             })
         });
     }));
