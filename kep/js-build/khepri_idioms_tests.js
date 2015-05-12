@@ -6,6 +6,10 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
     "use strict";
     var idiomsTests, listTests, sum, curried_sum, curried = idioms["curried"],
         list = idioms["list"],
+        fmap = idioms["fmap"],
+        ap = idioms["ap"],
+        __lt_quest_gt = idioms["<?>"],
+        __lt_star_gt = idioms["<*>"],
         y, y0, y1, __mul = (function(x, y) {
             return (x * y);
         }),
@@ -61,7 +65,18 @@ define(["require", "exports", "./lib/khepri-idioms"], (function(require, exports
     var aaa1 = ((y1 = [curried(__add), curried(__mul)]), list.apply(null, y1)),
         bbb1 = aaa1.ap(list(1, 2)),
         ccc1 = bbb1.ap(list(3, 4));
-    (listTests.apCurriedFunctions_0 = (ccc1.toString() === "[4,5,5,6,3,4,6,8]"));
+    (listTests.apCurriedFunctions_1 = (ccc1.toString() === "[4,5,5,6,3,4,6,8]"));
+    var curriedConcat = curried((function(xs, ys) {
+        return xs.concat(ys);
+    })),
+        aaa2 = list("ha", "hem", "hmm")
+            .fmap(curriedConcat)
+            .ap(list("?", "!", "."));
+    (listTests.apCurriedFunctions_2 = (aaa2.toString() === "[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]"));
+    var aaa3 = ap(fmap(list("ha", "hem", "hmm"))(curriedConcat))(list("?", "!", "."));
+    (listTests.apCurriedFunctions_3 = (aaa3.toString() === "[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]"));
+    var aaa4 = __lt_star_gt(__lt_quest_gt(list("ha", "hem", "hmm"), curriedConcat), list("?", "!", "."));
+    (listTests.apCurriedFunctions_4 = (aaa4.toString() === "[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]"));
     (exports["idiomsTests"] = idiomsTests);
     (exports["listTests"] = listTests);
     (exports["sum"] = sum);

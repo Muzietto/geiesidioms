@@ -2,6 +2,10 @@
 package (
   curried
   list
+  fmap
+  ap
+  (<?>)
+  (<*>)
 )
 {
 
@@ -16,6 +20,12 @@ package (
     get: \index -> args.(index),
     toString: \_ -> '[' + args.toString() + ']'
   });
+  
+  fmap := \func1 -> \func2 -> func1.fmap func2;
+  (<?>) := fmap;
+  
+  ap := \appl1 -> \appl2 -> appl1.ap appl2;
+  (<*>) := ap;
 
 
 }

@@ -4,7 +4,7 @@
 */
 define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var curried, list;
+    var curried, list, fmap, ap, __lt_quest_gt, __lt_star_gt;
     (curried = (function(fun) {
         return (function(value) {
             return ((fun.length <= 1) ? fun(value) : curried(fun.bind(null, value)));
@@ -37,6 +37,22 @@ define(["require", "exports"], (function(require, exports) {
             })
         });
     }));
+    (fmap = (function(func1) {
+        return (function(func2) {
+            return func1.fmap(func2);
+        });
+    }));
+    (__lt_quest_gt = fmap);
+    (ap = (function(appl1) {
+        return (function(appl2) {
+            return appl1.ap(appl2);
+        });
+    }));
+    (__lt_star_gt = ap);
     (exports["curried"] = curried);
     (exports["list"] = list);
+    (exports["fmap"] = fmap);
+    (exports["ap"] = ap);
+    (exports["<?>"] = __lt_quest_gt);
+    (exports["<*>"] = __lt_star_gt);
 }));

@@ -11,6 +11,10 @@ with import './lib/khepri-idioms'
   idioms#{
     curried
     list
+  fmap
+  ap
+  (<?>)
+  (<*>)
   }
 
 in {
@@ -46,6 +50,18 @@ in {
   var aaa1 = list <<| [curried (+), curried (*)];
   var bbb1 = aaa1.ap list(1,2);
   var ccc1 = bbb1.ap list(3,4);
-  listTests.apCurriedFunctions_0 := ccc1.toString() === '[4,5,5,6,3,4,6,8]';
+  listTests.apCurriedFunctions_1 := ccc1.toString() === '[4,5,5,6,3,4,6,8]';
 
+  var curriedConcat = curried(\xs, ys -> xs.concat ys);
+
+  var aaa2 = list('ha','hem','hmm')
+     .fmap(curriedConcat)
+     .ap(list('?','!','.'));
+  listTests.apCurriedFunctions_2 := aaa2.toString() === '[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]';
+
+  var aaa3 = ap (fmap list('ha','hem','hmm') curriedConcat) list('?','!','.');
+  listTests.apCurriedFunctions_3 := aaa3.toString() === '[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]';
+
+  var aaa4 = (list('ha','hem','hmm') <?> curriedConcat) <*> list('?','!','.');
+  listTests.apCurriedFunctions_4 := aaa4.toString() === '[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]';
 }
