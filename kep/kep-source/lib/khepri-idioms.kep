@@ -22,6 +22,7 @@ package (
   });
   
   fmap := \func1 -> \func2 -> func1.fmap func2;
+  // cannot use <$>
   (<?>) := fmap;
   
   ap := \appl1 -> \appl2 -> appl1.ap appl2;

@@ -61,7 +61,7 @@ in {
 
   var aaa3 = ap (fmap list('ha','hem','hmm') curriedConcat) list('?','!','.');
   listTests.apCurriedFunctions_3 := aaa3.toString() === '[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]';
-
-  var aaa4 = (list('ha','hem','hmm') <?> curriedConcat) <*> list('?','!','.');
+ 
+  var aaa4 =  list('ha','hem','hmm') <?> curriedConcat <*> list('?','!','.');
   listTests.apCurriedFunctions_4 := aaa4.toString() === '[ha?,ha!,ha.,hem?,hem!,hem.,hmm?,hmm!,hmm.]';
 }
