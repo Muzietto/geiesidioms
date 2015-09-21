@@ -1,5 +1,5 @@
 # geiesidioms
-Applicative functors (aka idioms) in crisp clear JavaScript.
+Applicative functors (aka idioms) in crisp clear JavaScript and in [Khepri](http://khepri-lang.com).
 
 Currently implemented:
 - maybes
