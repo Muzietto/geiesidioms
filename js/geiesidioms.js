@@ -1,3 +1,12 @@
+/*
+	GEIESIDIOMS - JS and Khepri Idioms, aka Applicatives
+	Author: Marco Faustinelli (contacts@faustinelli.net)
+	Web: http://faustinelli.net/
+	     http://faustinelli.wordpress.com/
+	Version: 1.0
+
+	The GNU v.2 License - Copyright (c) 2014-2015 Geiesidioms Project
+*/
 
 function curried(fun) {
   var result = function(value) {
