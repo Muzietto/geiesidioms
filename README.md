@@ -7,7 +7,9 @@ Currently implemented:
 - [lists](https://github.com/Muzietto/geiesidioms/blob/master/js/geiesidioms.js#L101)
 - [curried unaries (aka (->)r)](https://github.com/Muzietto/geiesidioms/blob/master/js/geiesidioms.js#L16)
 
-Doubleclick on any html file and there you go...
+JavaScript tests using Mocha are [here](http://rawgit.com/Muzietto/geiesidioms/master/index.html).
+
+Khepri tests are [here](http://rawgit.com/Muzietto/geiesidioms/master/index_khepri.html)
 
 References:
 
