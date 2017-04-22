@@ -1,7 +1,7 @@
 
-function curried(fun){
-  var result = function(value){
-    if (fun.length <= 1){
+function curried(fun) {
+  var result = function(value) {
+    if (fun.length <= 1) {
       return fun(value);
     } else {
       var partial = fun.bind(undefined, value);
@@ -13,7 +13,7 @@ function curried(fun){
 }
 
 ///// UNARY APPLICATIVE aka (->) r //////
-function unary(func){
+function unary(func) {
   'use strict';
   var curriedFunc = func.is_curried ? func : curried(func);
   curriedFunc.is_functor = true;
@@ -33,9 +33,9 @@ function unary(func){
    */
   // f <*> g = x -> f x (g x)
   // this <*> afa = x -> this x (afa x)
-  curriedFunc.ap = function(afa){
+  curriedFunc.ap = function(afa) {
     if (!afa.is_applicative) throw 'not an applicative!'
-    return unary(function(x){
+    return unary(function(x) {
       return curriedFunc(x)(afa(x));
     });
   }
@@ -45,7 +45,7 @@ function unary(func){
    * fmap fab this = x -> fab (this x)
    */
   curriedFunc.fmap = function(fab) {
-    return unary(function(x){
+    return unary(function(x) {
       return fab(curriedFunc(x));
     });
   }
@@ -61,12 +61,12 @@ function maybe(value){
   applicative.is_applicative = true;
   applicative.is_none = false;
   applicative.is_some = true;
-  applicative.value = function(){ return value; }
+  applicative.value = function() { return value; }
 
-  applicative.fmap = function(fab){
+  applicative.fmap = function(fab) {
     return maybe(fab(value));
   }
-  applicative.ap = function(afa){
+  applicative.ap = function(afa) {
     if (!afa.is_applicative) throw 'not an applicative!'
     /* ap aka <*>
      * <*> :: af (a -> b) -> af a -> af b
@@ -82,15 +82,15 @@ function maybe(value){
   if (value === null
    || (typeof value !== 'function' && isNaN(value))
    || value === Infinity
-   || typeof value === 'undefined'){
+   || typeof value === 'undefined') {
     // let's build the none 
     value = null;
     applicative.is_none = true;
     applicative.is_some = false;
-    applicative.fmap = function(){
+    applicative.fmap = function() {
       return applicative;
     }
-    applicative.ap = function(afa){
+    applicative.ap = function(afa) {
       return applicative;
     }
   }
@@ -98,30 +98,30 @@ function maybe(value){
 };
 
 //////// LIST APPLICATIVE ///////////
-function list(){ // variadic
+function list() { // variadic
   var args = Array.prototype.slice.apply(arguments);
   var applicative = {};
   applicative.is_functor = true;
   applicative.is_applicative = true;
   applicative.fmap = function(/*fabs*/) { // unary
     var fabs = Array.prototype.slice.apply(arguments);
-    var nextArgs = fabs.reduce(function(acc, curr){ 
+    var nextArgs = fabs.reduce(function(acc, curr) { 
       return acc.concat(args.map(curr));
     }, []);
     return list.apply(null, nextArgs);
   }
-  applicative.ap = function(afa){
+  applicative.ap = function(afa) {
     if (!afa.is_applicative) throw 'not an applicative!'
     // gotta preserve multiple args
     return afaFmap.apply(null, args);
-    function afaFmap(/*mappingFunctions*/){
+    function afaFmap(/*mappingFunctions*/) {
       var mappingFunctions = Array.prototype.slice.apply(arguments);
       return afa.fmap.apply(null, mappingFunctions);
     }
   }
   applicative.length = args.length;
   applicative.get = function(pos) { return args[pos]; }
-  applicative.toString = function(){ return args.reduce(function(a, c){ return a + c + ','}, '[').replace(/,$/, ']'); }
+  applicative.toString = function() { return args.reduce(function(a, c){ return a + c + ','}, '[').replace(/,$/, ']'); }
   return applicative;
 };
 
