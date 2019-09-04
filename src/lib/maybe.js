@@ -211,8 +211,11 @@ Maybe.prototype.ap = unimplemented;
 
 Nothing.prototype.ap = noop;
 
-Just.prototype.ap = function(b) {
-  return b.map(this.value);
+// m (a -> b) -> m a -> m b
+Just.prototype.ap = function(maybeA) {
+  // we are the wrapped function
+  return this.of(this.value(maybeA.value));
+  // return maybeA.map(this.value);
 };
 
 
@@ -228,8 +231,8 @@ Just.prototype.ap = function(b) {
 Maybe.prototype.map = unimplemented;
 Nothing.prototype.map = noop;
 
-Just.prototype.map = function(f) {
-  return this.of(f(this.value));
+Just.prototype.map = function(fab) {
+  return this.of(fab(this.value));
 };
 
 
