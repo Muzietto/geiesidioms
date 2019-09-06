@@ -2,9 +2,6 @@
 
 Array.prototype.fmap = Array.prototype.map;
 
-
-
-
 export function functor(fmap) {
   return {
     fmap,
