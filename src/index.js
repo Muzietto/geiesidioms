@@ -20,6 +20,14 @@ import {
 
 Array.prototype.fmap = Array.prototype.map;
 
+Array.prototype.rfmap = function(fab) {
+  return this.map(x => {
+    return (x.rfmap)
+      ? x.rfmap(this.map(fab))
+      : fab(x);
+  });
+};
+
 const maybes2 = [Maybe.of(12), Maybe.Nothing(), Maybe.of(23)];
 
 const incrementeds = composedFunctor.fmap(x => x + 1)(maybes2);
@@ -30,6 +38,9 @@ console.log(incrementeds2);
 
 const incrementeds3 = composedFunctor.fmap(x => x + 1)(Maybe.of(maybes2));
 console.log(incrementeds3);
+
+const revolutionary = maybes2.rfmap(x => x + 1);
+console.log('REVOLUTIONARY!!:', revolutionary);
 
 console.log('store: at startup and after view->setagain', JSON.stringify(fullStore), JSON.stringify(store));
 console.log('upperized:', JSON.stringify(upperized));

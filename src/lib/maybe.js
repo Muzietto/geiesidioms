@@ -242,9 +242,20 @@ Just.prototype.map = function(fab) {
 
 Maybe.prototype.fmap = Maybe.prototype.map;
 Nothing.prototype.fmap = noop;
+Just.prototype.fmap = Just.prototype.map;
 
-Just.prototype.fmap = function(fab) {
-  return this.of(fab(this.value));
+Maybe.prototype.rfmap = function(fab) {
+  if (this.isJust) return Just.prototype.rfmap(fab);
+  return this;
+};
+Nothing.prototype.rfmap = noop;
+
+Just.prototype.rfmap = function(fab) {
+  return x => {
+    return (x.fmap)
+      ? x.fmap(this.fmap(fab))
+      : fab(x);
+  };
 };
 
 // -- Chain ------------------------------------------------------------
