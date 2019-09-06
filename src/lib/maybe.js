@@ -80,12 +80,14 @@ function Maybe() {
 
 // The case for successful values
 Just.prototype = clone(Maybe.prototype);
+
 function Just(a) {
   this.value = a;
 }
 
 // The case for failure values
 Nothing.prototype = clone(Maybe.prototype);
+
 function Nothing() {
 }
 
@@ -228,13 +230,22 @@ Just.prototype.ap = function(maybeA) {
  * @method
  * @summary @Maybe[α] => (α → β) → Maybe[β]
  */
-Maybe.prototype.map = unimplemented;
+Maybe.prototype.map = function(fab) {
+  if (this.isJust) return Just.prototype.map(fab);
+  return this;
+};
 Nothing.prototype.map = noop;
 
 Just.prototype.map = function(fab) {
   return this.of(fab(this.value));
 };
 
+Maybe.prototype.fmap = Maybe.prototype.map;
+Nothing.prototype.fmap = noop;
+
+Just.prototype.fmap = function(fab) {
+  return this.of(fab(this.value));
+};
 
 // -- Chain ------------------------------------------------------------
 
