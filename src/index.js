@@ -1,3 +1,6 @@
+import Maybe from '@src/lib/maybe';
+import List from '@src/lib/list';
+import composedFunctor from '@src/composition/composedFunctor';
 import {
   store,
   fullStore,
@@ -13,7 +16,20 @@ import {
   noPrice,
   traversed1,
   traversed2,
-} from '@src/lenses/torreborre';
+} from '@src/composition/torreborre';
+
+Array.prototype.fmap = Array.prototype.map;
+
+const maybes2 = [Maybe.of(12), Maybe.Nothing(), Maybe.of(23)];
+
+const incrementeds = composedFunctor.fmap(x => x + 1)(maybes2);
+console.log(incrementeds);
+
+const incrementeds2 = composedFunctor.fmap(x => x + 1)([1, 2, 3]);
+console.log(incrementeds2);
+
+const incrementeds3 = composedFunctor.fmap(x => x + 1)(Maybe.of(maybes2));
+console.log(incrementeds3);
 
 console.log('store: at startup and after view->setagain', JSON.stringify(fullStore), JSON.stringify(store));
 console.log('upperized:', JSON.stringify(upperized));
