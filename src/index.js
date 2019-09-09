@@ -16,10 +16,6 @@ import {
   traversed1,
   traversed2,
 } from '@src/composition/torreborre';
-import {
-  composedFunctorH,
-  composedApplicativeH,
-} from '@src/composition/hamalainen';
 
 Array.prototype.fmap = Array.prototype.map;
 

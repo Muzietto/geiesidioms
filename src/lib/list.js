@@ -1,6 +1,7 @@
 export default List;
 
 // -- Aliases ----------------------------------------------------------
+// eslint-disable-next-line no-unused-vars
 const clone = Object.create;
 
 // eslint-disable-next-line no-unused-vars
