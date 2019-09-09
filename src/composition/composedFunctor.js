@@ -3,10 +3,15 @@ export default ComposedFunctor();
 
 function ComposedFunctor() {
   return {
-    fmap: function(fab) {
+    fmap: fab => x => {
+      return x.fmap(y => {
+        return y.fmap(fab);
+      });
+    },
+    xfmap: function(fab) {
       return x => {
         return (x.fmap)
-          ? x.fmap(this.fmap(fab))
+          ? x.xfmap(this.xfmap(fab))
           : fab(x);
       };
     },
