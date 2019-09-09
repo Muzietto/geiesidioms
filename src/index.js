@@ -1,5 +1,6 @@
 import Maybe from '@src/lib/maybe';
 import composedFunctor from '@src/composition/composedFunctor';
+import composedApplicative from '@src/composition/composedApplicative';
 import {
   store,
   fullStore,
@@ -32,11 +33,7 @@ const maybes2 = [Maybe.of(12), Maybe.Nothing(), Maybe.of(23)];
 const incrementeds = composedFunctor.fmap(x => x + 1)(maybes2);
 console.log(incrementeds);
 
-// const incrementeds2 = composedFunctor.fmap(x => x + 1)([1, 2, 3]);
-// console.log(incrementeds2);
-
-// const incrementeds3 = composedFunctor.fmap(x => x + 1)(Maybe.of(maybes2));
-// console.log(incrementeds3);
+const xxx = composedApplicative.pure(x => y => x + y);
 
 const revolutionary = maybes2.rfmap(x => x + 1);
 console.log('REVOLUTIONARY!!:', revolutionary);
@@ -54,3 +51,7 @@ console.log('oranges price with market open', maybePrice);
 console.log('oranges price with market closed', noPrice);
 console.log('traverse encountering a Nothing', traversed1);
 console.log('traverse without encountering a Nothing', traversed2);
+
+function cons(car, cdr) {
+  return [car].concat(cdr);
+}
