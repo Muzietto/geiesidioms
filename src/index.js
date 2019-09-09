@@ -35,8 +35,9 @@ console.log(incrementeds);
 
 const xxx = composedApplicative.pure(x => y => x + y);
 
+// cagata pazzesca...
 const revolutionary = maybes2.rfmap(x => x + 1);
-console.log('REVOLUTIONARY!!:', revolutionary);
+console.log('(wrong) REVOLUTIONARY!!:', revolutionary);
 
 console.log('store: at startup and after view->setagain', JSON.stringify(fullStore), JSON.stringify(store));
 console.log('upperized:', JSON.stringify(upperized));
