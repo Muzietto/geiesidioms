@@ -40,15 +40,6 @@ const xxx = composedApplicative.pure(x => y => x + y);
 const revolutionary = maybes2.rfmap(x => x + 1);
 console.log('(wrong) REVOLUTIONARY!!:', revolutionary);
 
-console.log('store: at startup and after view->setagain', JSON.stringify(fullStore), JSON.stringify(store));
-console.log('upperized:', JSON.stringify(upperized));
-console.log('upperenlargized:', JSON.stringify(upperenlargized),
-  JSON.stringify(upperenlargized2));
-
-console.log('retrieved:', retrieved);
-console.log('overridden:', overridden);
-console.log('inputStraight:', inputStraight);
-
 console.log('oranges price with market open', maybePrice);
 console.log('oranges price with market closed', noPrice);
 console.log('traverse encountering a Nothing', traversed1);
