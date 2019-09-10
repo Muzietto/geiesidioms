@@ -1,0 +1,66 @@
+
+*Main> :t point
+point :: Functor f => (Point -> f Point) -> Atom -> f Atom
+
+*Main> :t point . x
+point . x :: Functor f => (Double -> f Double) -> Atom -> f Atom
+
+*Main> :t over
+over :: ASetter s t a b -> (a -> b) -> s -> t
+
+type ASetter s t a b = (a -> Identity b) -> s -> Identity t  // def from Hackage
+
+// logical inference says:
+over :: ((a -> Identity b) -> s -> Identity t) -> (a -> b) -> s -> t
+point :: (Point -> Identity Point) -> Atom -> Identity Atom // ref. PIPO
+point :: ASetter Point Point Atom Atom // lens point is also a setter
+// end of logical inferences
+
+*Main> :t over point
+over point :: (Point -> Point) -> Atom -> Atom
+
+*Main> :t over (point . x)
+over (point . x) :: (Double -> Double) -> Atom -> Atom
+
+*Main> :t over (point . x) (+1)
+over (point . x) :: Atom -> Atom
+
+*Main> :i point
+point :: Lens' Atom Point 	    -- Defined at my_lenses.hs:14:3
+point :: Lens Atom Atom Point Point -- my own deduction
+
+*Main> :i Lens'
+type Lens' s a = Lens s s a a 	-- Defined in ‘Control.Lens.Type’
+
+*Main> :i Lens
+type Lens s t a b =
+  forall (f :: * -> *). Functor f => (a -> f b) -> s -> f t
+  	-- Defined in ‘Control.Lens.Type’
+
+*Main> :i lens
+lens :: (s -> a) -> (s -> b -> t) -> Lens s t a b
+  	-- Defined in ‘Control.Lens.Lens’
+
+// creating a lens from scratch
+myPointLens :: Functor f => (Point -> f Point) -> Atom -> f Atom // ref. PIPO
+myPointLens famb atom = fmap (\newPoint -> atom { _point = newPoint }) (famb (_point atom))
+
+// a functions that clones and changes a Point
+*Main> :t \p -> Point { _x = (_y p), _y = (_x p)}
+\p -> Point { _x = (_y p), _y = (_x p)} :: Point -> Point
+
+// using over with my point lens to receive a cloned/changed atom
+*Main> over myPointLens (\p -> Point { _x = (_y p), _y = (_x p)} ) (Atom "ciao" (Point 456 567))
+Atom {_element = "ciao", _point = Point {_x = 567.0, _y = 456.0}}
+
+// using my lens for points to view inside an atom
+*Main> view myPointLens (Atom "ciao" (Point 456 567))
+Point {_x = 456.0, _y = 567.0}
+
+*Main> :t view
+view :: Control.Monad.Reader.Class.MonadReader s m => Getting a s a -> m a
+
+*Main> :t view myPointLens
+view myPointLens :: Control.Monad.Reader.Class.MonadReader Atom m => m Point
+
+
