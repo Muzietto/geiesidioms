@@ -12,6 +12,7 @@ function ComposedApplicative() {
     // a -> m a
     pure: null,
     // m (a -> bc) -> m a -> m bc
+    // eslint-disable-next-line no-unused-vars
     ap: mfa_bc => null,
   };
 }

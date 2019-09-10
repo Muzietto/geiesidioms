@@ -33,6 +33,7 @@ const maybes2 = [Maybe.of(12), Maybe.Nothing(), Maybe.of(23)];
 const incrementeds = composedFunctor.fmap(x => x + 1)(maybes2);
 console.log(incrementeds);
 
+// eslint-disable-next-line no-unused-vars
 const xxx = composedApplicative.pure(x => y => x + y);
 
 // cagata pazzesca...
