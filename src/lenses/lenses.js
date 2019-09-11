@@ -3,15 +3,20 @@ const view = (lens, store) => lens.view(store);
 
 const set = (lens, value, store) => lens.set(value)(store);
 
-const lensFor = key => ({
-  view: store => store[key],
-  set: value => store => ({
-    ...store,
-    [key]: value,
-  }),
-  // (a -> b) -> lens a -> lens b
-  fmap: fab => store => this.set(fab(this.view(store)))(store),
-});
+const over = lens => f => store => set(lens, f(view(lens, store)), store);
+
+const lensFor = (key, viewFun) => {
+  const result = {
+    view: viewFun || (store => store[key]),
+    set: value => store => ({
+      ...store,
+      [key]: value,
+    }),
+    // (a -> b) -> lens a -> lens b
+    fmap: fab => lensFor(key, store => fab(result.view(store))),
+  };
+  return result;
+};
 
 const aStore = {};
 const lensA = lensFor('a');
@@ -40,8 +45,6 @@ console.log('store: at startup and after view->setagain', JS(fullStore), JS(stor
 const upperize = x => x.toUpperCase();
 const enlarge = x => x.split('').join(' ');
 
-const over = lens => f => store => set(lens, f(view(lens, store)), store);
-
 const upperized = over(lensA)(upperize)(fullStore);
 console.log('upperized:', JS(upperized));
 
@@ -56,4 +59,6 @@ console.log('upperenlargized:', JS(upperenlargized), JS(upperenlargized2));
 
 const simpleStore = { a: 'paperino' };
 const fmappedToUpperize = lensA.fmap(upperize).view(simpleStore);
-console.log(`start: ${JS(simpleStore)}, after fmapping: ${fmappedToUpperize}`);
+console.log(`start: ${lensA.view(simpleStore)}, after fmapping: ${fmappedToUpperize}`);
+const fmappedToUpperizeAndEnlarge = lensA.fmap(upperize).fmap(enlarge).view(simpleStore);
+console.log(`start: ${lensA.view(simpleStore)}, after fmapping: ${fmappedToUpperizeAndEnlarge}`);
