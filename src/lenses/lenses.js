@@ -5,15 +5,23 @@ const set = (lens, value, store) => lens.set(value)(store);
 
 const over = lens => f => store => set(lens, f(view(lens, store)), store);
 
-const lensFor = (key, viewFun) => {
+const lensFor = (key, viewFun, setFun) => {
   const result = {
+    key,
     view: viewFun || (store => store[key]),
-    set: value => store => ({
+    set: setFun || (value => store => ({
       ...store,
       [key]: value,
-    }),
+    })),
     // (a -> b) -> lens a -> lens b
     fmap: fab => lensFor(key, store => fab(result.view(store))),
+    // lens -> lens -> lens
+    compose: lens => lensFor(
+      lens.key,
+      store => lens.view(result.view(store)),
+      value => store => result.set(value)(store)
+      //          [key]: lens.set(value)(store[lens.key]),
+    ),
   };
   return result;
 };
@@ -36,11 +44,11 @@ const fullStore = {
   c: 'paperino',
 };
 
-const store = set(lensA, view(lensA, fullStore), fullStore);
+const storez = set(lensA, view(lensA, fullStore), fullStore);
 
 const JS = JSON.stringify;
 
-console.log('store: at startup and after view->setagain', JS(fullStore), JS(store));
+console.log('store: at startup and after view->setagain', JS(fullStore), JS(storez));
 
 const upperize = x => x.toUpperCase();
 const enlarge = x => x.split('').join(' ');
@@ -62,3 +70,25 @@ const fmappedToUpperize = lensA.fmap(upperize).view(simpleStore);
 console.log(`start: ${lensA.view(simpleStore)}, after fmapping: ${fmappedToUpperize}`);
 const fmappedToUpperizeAndEnlarge = lensA.fmap(upperize).fmap(enlarge).view(simpleStore);
 console.log(`start: ${lensA.view(simpleStore)}, after fmapping: ${fmappedToUpperizeAndEnlarge}`);
+
+const nestedStore = { a: { b: 'nested paperino' } };
+const nestedStoreB = { a: { c: { d: 'deeply nested paperino' } } };
+const lensA_B = lensA.compose(lensB);
+console.log(`nested search a.b ${lensA_B.view(nestedStore)}`);
+const lensA_C_D = lensA.compose(lensFor('c')).compose(lensFor('d'));
+console.log(`deeply nested search a.c.d ${lensA_C_D.view(nestedStoreB)}`);
+const modifiedAB = lensA_B.set('nested topolino')(nestedStore);
+console.log(`nested modification a.b ${JS(modifiedAB)}`);
+const modifiedACD = lensA_C_D.set('deeply nested topolino')(nestedStoreB);
+console.log(`deeply nested modification a.c.d ${JS(modifiedACD)}`);
+
+const bigNest = { a: { b: { c: { d: { e: 'troglodita' } } } } };
+const bigLens = lensFor('a')
+  .compose(lensFor('b'))
+  .compose(lensFor('c'))
+  .compose(lensFor('d'))
+  .compose(lensFor('e'));
+const inTheNest = bigLens.view(bigNest);
+const changedNest = bigLens.set('fred flinstone')(bigNest);
+console.log(`deeply nested search a.b.c.d.e ${inTheNest}`);
+console.log(`deeply nested modification a.b.c.d.e ${JS(changedNest)}`);
